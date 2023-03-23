@@ -15,14 +15,6 @@ var remove bool
 
 var rootCmd = &cobra.Command{
 	Use: "sesmate",
-	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		optionsValueWithEnv(&ak, "AWS_AK", flagAK, cmd)
-		optionsValueWithEnv(&sk, "AWS_SK", flagSK, cmd)
-		optionsValueWithEnv(&endpoint, "AWS_ENDPOINT", flagEndpoint, cmd)
-		optionsValueWithEnv(&region, "AWS_REGION", flagRegion, cmd)
-
-		return nil
-	},
 	Run: func(cmd *cobra.Command, args []string) {
 		err := cmd.Help()
 		if err != nil {
@@ -35,6 +27,10 @@ var rootCmd = &cobra.Command{
 var syncCmd = &cobra.Command{
 	Use: "sync",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		optionsValueWithEnv(&ak, "AWS_AK", flagAK, cmd)
+		optionsValueWithEnv(&sk, "AWS_SK", flagSK, cmd)
+		optionsValueWithEnv(&endpoint, "AWS_ENDPOINT", flagEndpoint, cmd)
+		optionsValueWithEnv(&region, "AWS_REGION", flagRegion, cmd)
 		if err := requireValue(&directory, flagDir, cmd); err != nil {
 			return err
 		}
