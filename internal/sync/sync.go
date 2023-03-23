@@ -7,7 +7,7 @@ import (
 	awsSesV2 "github.com/aws/aws-sdk-go-v2/service/sesv2"
 
 	"github.com/BlackHole1/sesmate/internal/sync/ses"
-	"github.com/BlackHole1/sesmate/internal/sync/template"
+	"github.com/BlackHole1/sesmate/pkg/template"
 )
 
 type Context struct {
