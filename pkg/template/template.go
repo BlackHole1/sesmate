@@ -5,8 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
+
+	"github.com/BlackHole1/sesmate/pkg/utils"
 )
 
 type SchemaBody struct {
@@ -21,7 +22,7 @@ type Schema struct {
 }
 
 func FindWithDir(dir string) ([]*SchemaBody, error) {
-	abdPath, err := toAbs(dir)
+	abdPath, err := utils.ToAbs(dir, false)
 	if err != nil {
 		return nil, err
 	}
@@ -66,28 +67,6 @@ func FindWithName(body []*SchemaBody, templateName string) *SchemaBody {
 	}
 
 	return nil
-}
-
-func toAbs(p string) (string, error) {
-	if path.IsAbs(p) {
-		return p, nil
-	}
-
-	absPath, err := filepath.Abs(p)
-	if err != nil {
-		return "", err
-	}
-
-	fileInfo, err := os.Stat(absPath)
-	if err != nil {
-		return "", err
-	}
-
-	if !fileInfo.IsDir() {
-		return "", errors.New("path is not a directory")
-	}
-
-	return absPath, nil
 }
 
 func validate(p string) *SchemaBody {

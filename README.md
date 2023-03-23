@@ -25,7 +25,7 @@ on:
     branches:
       - main
     paths:
-      - ses_templates/**.json
+      - sestemplate/**.json
 
   workflow_dispatch:
     inputs:
@@ -45,7 +45,7 @@ jobs:
           sudo chmod +x /usr/local/bin/sesmate
 
       - name: Run Sync
-        run: sesmate sync --dir ./ses_templates --remove
+        run: sesmate sync --dir ./sestemplate --remove
         env:
           AWS_AK: ${{ secrets.AWS_AK }}
           AWS_SK: ${{ secrets.AWS_SK }}
