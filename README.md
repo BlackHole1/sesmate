@@ -45,12 +45,29 @@ jobs:
           sudo chmod +x /usr/local/bin/sesmate
 
       - name: Run Sync
-        run: |
-          sesmate sync --dir ./ses_templates --remove
+        run: sesmate sync --dir ./ses_templates --remove
         env:
           AWS_AK: ${{ secrets.AWS_AK }}
           AWS_SK: ${{ secrets.AWS_SK }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
+```
+
+or
+
+```yaml
+# ...
+- name: Configure AWS Credentials
+  uses: aws-actions/configure-aws-credentials@v1
+  with:
+    aws-region: ${{ secrets.AWS_REGION }}
+    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+    role-duration-seconds: 120
+    role-session-name: ${{ secrets.AWS_ROLE_SESSION_NAME }}
+# ...
+- name: Run Sync
+  run: sesmate sync --dir ./ses_templates --remove
 ```
 
 #### Use aws credentials
