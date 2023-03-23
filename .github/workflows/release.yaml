@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  github:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+
+      - name: Set up Go
+        uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9 # 4.0.0
+        with:
+          go-version: 1.20.2
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Build
+        run: |
+          for i in $(echo $LIST | tr ',' ' ')
+          do
+          GOOS=`echo $i | cut -d'/' -f1`
+          GOARCH=`echo $i | cut -d'/' -f2`
+          
+          go build -ldflags "-s -w --extldflags '-static -fpic'" -o ./bin/sesmate-$GOOS-$GOARCH ./cmd/sesmate
+          
+          echo "Build sesmate-$GOOS-$GOARCH done"
+          done
+        env:
+          CGO_ENABLED: 0
+          LIST: linux/amd64,linux/arm64,windows/amd64,windows/arm64,darwin/amd64,darwin/arm64
+
+      - name: Create github release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
+        with:
+          files: bin/sesmate-*
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
