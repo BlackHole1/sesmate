@@ -67,31 +67,31 @@ or
     role-session-name: ${{ secrets.AWS_ROLE_SESSION_NAME }}
 # ...
 - name: Run Sync
-  run: sesmate sync --dir ./ses_templates --remove
+  run: sesmate sync --dir ./sestemplate --remove
 ```
 
 #### Use aws credentials
 
 ```shell
-sesmate sync --dir ./templates
+sesmate sync --dir ./sestemplate
 ```
 
 #### Use aws profile
 
 ```shell
-AWS_PROFILE=dev sync --dir ./templates
+AWS_PROFILE=dev sync --dir ./sestemplate
 ```
 
 #### Use aws access key and secret key and region
 
 ```shell
-sesmate sync --dir ./templates --ak AKIAIOSFODNN7EXAMPLE --sk wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY --region us-east-1
+sesmate sync --dir ./sestemplate --ak AKIAIOSFODNN7EXAMPLE --sk wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY --region us-east-1
 ```
 
 #### Custom endpoint
 
 ```shell
-sesmate sync --dir ./templates --endpoint http://localhost:4579
+sesmate sync --dir ./sestemplate --endpoint http://localhost:4579
 ```
 
 #### Use environment variables
@@ -101,7 +101,52 @@ export AWS_AK=AKIAIOSFODNN7EXAMPLE
 export AWS_SK=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 export AWS_ENDPOINT=http://localhost:4579
 export AWS_REGION=us-east-1
-sesmate sync --dir ./templates
+sesmate sync --dir ./sestemplate
+```
+
+## gen
+
+Generate go file from template files.
+
+### Command Line Options
+
+- `--dir` - Local template directory.
+- `--output` - Output directory. Default: "./sestemplate".
+- `--filename` - Output file name. Default: "name".
+- `--package-name` - GO package name. Default: "sestemplate".
+- `--prefix` - Prefix of generated const. Default: "".
+- `--case` - Case of generated const, allowed values: *lower*, *upper*, *camel*, *pascal*, *snake*, *screaming_snake*, *capitalized_snake*. Default: "pascal".
+- `--help` - Print usage help.
+
+### Usage
+
+```shell
+sesmate gen --dir ./sestemplate --output ./sestemplate --filename name --package-name sestemplate --prefix Name --case pascal
+```
+
+## Example
+
+./sestemplate/a.json:
+```json
+{
+    "Template": {
+        "TemplateName": "v1_email_confirmation_code",
+        "SubjectPart": "Your Confirmation Code",
+        "TextPart": "Code is: {{code}}"
+    }
+}
+```
+
+execute:
+```shell
+sesmate gen --dir ./sestemplate --output ./sestemplate --filename name --package-name sestemplate --case pascal
+```
+
+output file: ./sestemplate/name.go:
+```go
+package sestemplate
+
+const V1EmailConfirmationCode = "v1_email_confirmation_code"
 ```
 
 ## zsh completion
