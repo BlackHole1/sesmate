@@ -27,12 +27,18 @@ jobs:
         run: |
           for i in $(echo $LIST | tr ',' ' ')
           do
-          GOOS=`echo $i | cut -d'/' -f1`
-          GOARCH=`echo $i | cut -d'/' -f2`
-          
-          go build -ldflags "-s -w --extldflags '-static -fpic'" -o ./bin/sesmate-$GOOS-$GOARCH ./cmd/sesmate
-          
+          export GOOS=`echo $i | cut -d'/' -f1`
+          export GOARCH=`echo $i | cut -d'/' -f2`
+
+          if [ "$GOOS" = "windows" ]; then
+            export FILENAME=sesmate-$GOOS-$GOARCH.exe
+          else
+            export FILENAME=sesmate-$GOOS-$GOARCH
+          fi
+
+          go build -ldflags "-s -w --extldflags '-static -fpic'" -o ./bin/$FILENAME ./cmd/sesmate
           echo "Build sesmate-$GOOS-$GOARCH done"
+
           done
         env:
           CGO_ENABLED: 0
