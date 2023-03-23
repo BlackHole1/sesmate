@@ -4,6 +4,8 @@
 
 Synchronize local templates to AWS SES service, supporting create, delete, and update operations.
 
+> AWS SES Template Structure: https://docs.aws.amazon.com/ses/latest/dg/send-personalized-email-api.html#send-personalized-email-create-template
+
 ### Command Line Options
 
 - `--dir` - The local template directory.
