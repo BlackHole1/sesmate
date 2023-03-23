@@ -34,7 +34,7 @@ on:
         description: ""
 
 jobs:
-  migration:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
