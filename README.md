@@ -160,9 +160,9 @@ const V1UserInfo = "v1_user_info"
 
 type V1UserInfoData struct {
 	Name  string `json:"name"`
-    Age   int    `json:"Age"`
-    Email string `json:"_email"`
-    Name2  string `json:"_name"`
+	Age   int    `json:"Age"`
+	Email string `json:"_email"`
+	Name2 string `json:"_name"`
 }
 ```
 
