@@ -1,5 +1,13 @@
 # SESMATE
 
+## Install
+
+```shell
+curl -fsSL https://raw.githubusercontent.com/BlackHole1/sesmate/main/install.sh | sh -
+# or
+wget -qO- https://raw.githubusercontent.com/BlackHole1/sesmate/main/install.sh | sh -
+```
+
 ## sync
 
 Synchronize local templates to AWS SES service, supporting create, delete, and update operations.
