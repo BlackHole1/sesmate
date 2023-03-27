@@ -32,31 +32,35 @@ func FindWithDir(dir string) ([]*SchemaBody, error) {
 		return nil, err
 	}
 
-	list := make([]string, 0, len(files))
+	list := make([]*SchemaBody, 0, len(files))
 	for _, dirEntry := range files {
 		if !dirEntry.IsDir() && filepath.Ext(dirEntry.Name()) == ".json" {
-			list = append(list, filepath.Join(abdPath, dirEntry.Name()))
+			p := filepath.Join(abdPath, dirEntry.Name())
+			t := validate(p)
+			if t == nil {
+				fmt.Printf("[sesmate]: skip %s, because template is invalid.\n", filepath.Base(p))
+				continue
+			}
+
+			if info, err := os.Stat(p); err != nil {
+				fmt.Printf("[sesmate]: skip %s, because %s.\n", filepath.Base(p), err.Error())
+				continue
+			} else if info.Size() > 500*1024 {
+				fmt.Printf("[sesmate]: skip %s, because template size exceeds the limit of 500 KB.\n", filepath.Base(p))
+				continue
+			}
+
+			list = append(list, t)
 		}
 	}
 	if len(list) == 0 {
-		return nil, errors.New("no json file found")
-	}
-
-	result := make([]*SchemaBody, 0, len(list))
-
-	for _, p := range list {
-		t := validate(p)
-		if t == nil {
-			fmt.Printf("[sesmate]: skip %s, because template is invalid.\n", filepath.Base(p))
-			continue
-		}
-		result = append(result, t)
-	}
-	if len(result) == 0 {
 		return nil, errors.New("no template file found")
 	}
+	if len(list) > 10000 {
+		return nil, errors.New("the number of templates exceeds the limit of 10000")
+	}
 
-	return result, err
+	return list, err
 }
 
 func FindWithName(body []*SchemaBody, templateName string) *SchemaBody {
