@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/BlackHole1/sesmate/internal/gen"
+	"github.com/BlackHole1/sesmate/pkg/char"
 )
 
 var genCmd = &cobra.Command{
@@ -28,7 +29,7 @@ func init() {
 		filename    string
 		packageName string
 		prefix      string
-		charCase    = gen.CharCasePascal
+		charCase    = char.CasePascal
 	)
 
 	genCmd.RunE = func(cmd *cobra.Command, args []string) error {

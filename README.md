@@ -140,9 +140,9 @@ sesmate gen --dir ./sestemplate --output ./sestemplate --filename name --package
 ```json
 {
     "Template": {
-        "TemplateName": "v1_email_confirmation_code",
-        "SubjectPart": "Your Confirmation Code",
-        "TextPart": "Code is: {{code}}"
+        "TemplateName": "v1_user_info",
+        "SubjectPart": "Your Info",
+        "TextPart": "Name: {{name}}, age: {{ Age }}, email: {{_email}}, nickname: {{_name}}"
     }
 }
 ```
@@ -156,7 +156,14 @@ output file: ./sestemplate/name.go:
 ```go
 package sestemplate
 
-const V1EmailConfirmationCode = "v1_email_confirmation_code"
+const V1UserInfo = "v1_user_info"
+
+type V1UserInfoData struct {
+	Name  string `json:"name"`
+    Age   int    `json:"Age"`
+    Email string `json:"_email"`
+    Name2  string `json:"_name"`
+}
 ```
 
 ## zsh completion
