@@ -8,6 +8,7 @@ import (
 
 	"github.com/BlackHole1/sesmate/internal/sync/ses"
 	"github.com/BlackHole1/sesmate/pkg/template"
+	"github.com/BlackHole1/sesmate/pkg/utils"
 )
 
 type Context struct {
@@ -98,7 +99,7 @@ func (c *Context) update() error {
 
 func (c *Context) create() error {
 	for _, v := range c.localTemplates {
-		if !arrIn(c.remoteTemplateNames, v.TemplateName) {
+		if !utils.InString(c.remoteTemplateNames, v.TemplateName) {
 			if err := ses.CreateTemplate(v); err != nil {
 				return err
 			}
@@ -107,14 +108,4 @@ func (c *Context) create() error {
 	}
 
 	return nil
-}
-
-func arrIn(arr []string, target string) bool {
-	for _, v := range arr {
-		if v == target {
-			return true
-		}
-	}
-
-	return false
 }
