@@ -23,6 +23,11 @@ jobs:
       - name: Download dependencies
         run: go mod download
 
+      - name: Modify Version
+        run: echo "$APP_VERSION" > ./cmd/sesmate/version.txt
+        env:
+          APP_VERSION: ${{ github.ref_name }}
+
       - name: Build
         run: |
           for i in $(echo $LIST | tr ',' ' ')
