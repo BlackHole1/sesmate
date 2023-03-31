@@ -24,7 +24,7 @@ jobs:
         run: go mod download
 
       - name: Modify Version
-        run: echo "$APP_VERSION" > ./cmd/sesmate/version.txt
+        run: echo "$APP_VERSION" > ./internal/version/version.txt
         env:
           APP_VERSION: ${{ github.ref_name }}
 
