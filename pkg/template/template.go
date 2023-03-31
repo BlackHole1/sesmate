@@ -21,7 +21,7 @@ type Schema struct {
 	Template SchemaBody `json:"Template"`
 }
 
-func FindWithDir(dir string) ([]*SchemaBody, error) {
+func findDir(dir string, showWarn bool) ([]*SchemaBody, error) {
 	abdPath, err := utils.ToAbs(dir, false)
 	if err != nil {
 		return nil, err
@@ -38,15 +38,21 @@ func FindWithDir(dir string) ([]*SchemaBody, error) {
 			p := filepath.Join(abdPath, dirEntry.Name())
 			t := validate(p)
 			if t == nil {
-				fmt.Printf("[sesmate]: skip %s, because template is invalid.\n", filepath.Base(p))
+				if showWarn {
+					fmt.Printf("[sesmate]: skip %s, because template is invalid.\n", filepath.Base(p))
+				}
 				continue
 			}
 
 			if info, err := os.Stat(p); err != nil {
-				fmt.Printf("[sesmate]: skip %s, because %s.\n", filepath.Base(p), err.Error())
+				if showWarn {
+					fmt.Printf("[sesmate]: skip %s, because %s.\n", filepath.Base(p), err.Error())
+				}
 				continue
 			} else if info.Size() > 500*1024 {
-				fmt.Printf("[sesmate]: skip %s, because template size exceeds the limit of 500 KB.\n", filepath.Base(p))
+				if showWarn {
+					fmt.Printf("[sesmate]: skip %s, because template size exceeds the limit of 500 KB.\n", filepath.Base(p))
+				}
 				continue
 			}
 
@@ -61,6 +67,14 @@ func FindWithDir(dir string) ([]*SchemaBody, error) {
 	}
 
 	return list, err
+}
+
+func FindDir(dir string) ([]*SchemaBody, error) {
+	return findDir(dir, true)
+}
+
+func FindDirWithoutWarn(dir string) ([]*SchemaBody, error) {
+	return findDir(dir, false)
 }
 
 func FindWithName(body []*SchemaBody, templateName string) *SchemaBody {

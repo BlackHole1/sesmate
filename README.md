@@ -166,6 +166,32 @@ type V1UserInfoData struct {
 }
 ```
 
+## server
+
+Start a local SES server.
+
+* Support sesv2
+* Support `SendEmail` API in AWS
+
+### Command Line Options
+
+- `--dir` - The local template directory.
+- `--port` - The port to listen on. Default: "8091".
+- `--host` - The host to listen on. Default: "127.0.0.1".
+- `--help` - Print usage help.
+
+### Usage
+
+```shell
+sesmate server --dir ./sestemplate --port 8091 --host 127.0.0.1
+```
+
+> AWS Endpoint is: `http://localhost:8091/aws`
+
+> Open `http://localhost:8091/` in browser to view the email list.
+
+![](./asserts/server-web.png)
+
 ## zsh completion
 ```shell
 echo "source <(sesmate completion zsh); compdef _sesmate sesmate" >> ~/.zshrc
