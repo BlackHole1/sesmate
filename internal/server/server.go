@@ -41,4 +41,9 @@ func (c *Context) router(engine *gin.Engine) {
 	{
 		engine.GET("/", controller.ViewEmail)
 	}
+
+	{
+		api := engine.Group("/api")
+		api.GET("/clear", controller.APIClearEmail)
+	}
 }

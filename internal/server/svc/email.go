@@ -25,3 +25,7 @@ func (c *emailContext) AllRecord() ([]*model.EmailRecord, error) {
 
 	return p, err
 }
+
+func (c *emailContext) DeleteAllRecord() error {
+	return c.db.Where("1=1").Delete(&model.EmailRecord{}).Error
+}
