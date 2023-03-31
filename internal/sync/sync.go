@@ -23,7 +23,7 @@ func New(ak, sk, endpoint, region, directory string, isRemove bool) *Context {
 		log.Fatalln(err.Error())
 	}
 
-	localTemplates, err := template.FindWithDir(directory)
+	localTemplates, err := template.FindDir(directory)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}

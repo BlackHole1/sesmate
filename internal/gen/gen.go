@@ -31,7 +31,7 @@ type Context struct {
 }
 
 func New(dir, output, filename, packageName, prefix string, charCase char.Case) *Context {
-	localTemplates, err := sestemplate.FindWithDir(dir)
+	localTemplates, err := sestemplate.FindDir(dir)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
